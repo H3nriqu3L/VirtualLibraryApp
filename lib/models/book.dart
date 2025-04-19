@@ -99,3 +99,23 @@ Future<List<Book>> fetchBooks(String query) async {
     throw Exception('Erro ao carregar livros');
   }
 }
+
+Future<Book> fetchBook(String query) async {
+  final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
+  final response = await get(url);
+
+  log('Resposta da API:', name: 'GoogleBooksAPI');
+  log(response.body, name: 'GoogleBooksAPI');
+
+  if (response.statusCode == 200) {
+    final Map data = jsonDecode(response.body);
+    final item = data['items']?.first;  // Pegando apenas o primeiro item
+    if (item != null) {
+      return Book.fromJson(item);
+    } else {
+      throw Exception('Nenhum livro encontrado');
+    }
+  } else {
+    throw Exception('Erro ao carregar livro');
+  }
+}

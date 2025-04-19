@@ -10,15 +10,11 @@ class MyHomePage extends StatefulWidget {
 
   @override
   _MyHomePageState createState() => _MyHomePageState();
-
 }
 
 class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   List<Book> books = [];
   bool _isLoading = true;
-
-
-
 
   Future<void> _loadBooks() async {
     try {
@@ -56,7 +52,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
   }
 
   @override
-  void dispose(){
+  void dispose() {
     WidgetsBinding.instance.removeObserver(this);
     super.dispose();
   }
@@ -76,8 +72,8 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
 
   @override
   Widget build(BuildContext context) {
-
-    final args = ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    final args =
+        ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
     final List<Book> popular_books = args?['popular_books'] ?? [];
 
     return Container(
@@ -113,16 +109,31 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
                       height: 180,
                       child: PageView.builder(
                         controller: PageController(viewportFraction: 0.5),
-                        itemCount: popular_books.isEmpty ? 0 : popular_books.length,
+                        itemCount:
+                            popular_books.isEmpty ? 0 : popular_books.length,
                         itemBuilder: (_, index) {
                           final popular_book = popular_books[index];
-                          return Container(
-                            height: 180,
-                            width: MediaQuery.of(context).size.width,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(15),
-                              image: DecorationImage(
-                                image: AssetImage("assets/${popular_book.img}"),
+                          return InkWell(
+                            onTap: () {
+                              Navigator.pushNamed(
+                                context,
+                                '/bookpage',
+                                arguments:
+                                    popular_book, // envia o book como argumento
+                              );
+                            },
+                            child: Container(
+                              height: 180,
+                              width: MediaQuery.of(context).size.width,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(15),
+                                image: DecorationImage(
+                                  image:
+                                      popular_book.img.startsWith('http')
+                                          ? NetworkImage(popular_book.img)
+                                          : AssetImage('assets/defaultimg.jpg')
+                                              as ImageProvider,
+                                ),
                               ),
                             ),
                           );
@@ -134,7 +145,12 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               ),
             ),
             SizedBox(height: 10),
-            Expanded(child: HomeNestedScroll(books: books, onRefreshBooks:refreshBooks ,)),
+            Expanded(
+              child: HomeNestedScroll(
+                books: books,
+                onRefreshBooks: refreshBooks,
+              ),
+            ),
           ],
         ),
       ),

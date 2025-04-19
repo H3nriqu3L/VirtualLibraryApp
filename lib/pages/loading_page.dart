@@ -6,7 +6,6 @@ import 'package:book_app/utils/database_helper.dart';
 
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 
-
 class LoadingPage extends StatefulWidget {
   const LoadingPage({super.key});
 
@@ -15,31 +14,44 @@ class LoadingPage extends StatefulWidget {
 }
 
 class _LoadingPageState extends State<LoadingPage> {
+
+  
   Future<void> readData(BuildContext context) async {
-    final String filePath = 'json/popular_books.json';
-    final String jsonString = await rootBundle.loadString(filePath);
+    final List<String> queries = [
+      "Crime e castigo",
+      "Dom Quixote",
+      "A irmandade do Anel",
+      "Moby Dick",
+      "A fazenda dos Animais",
+      "A metamorfose",
+      "Os miseráveis",
+      "A guerra dos tronos",
+      "Duna"
 
-    List<dynamic> booksJson = jsonDecode(jsonString);
+    ];
 
-    List<Book> popular_books = booksJson.map((json) => Book.fromJson(json)).toList();
-    // List<Map<String, dynamic>> booksData = List<Map<String, dynamic>>.from(
-    //   booksJson,
-    // );
+    List<Book> books = [];
 
-
+    for (var query in queries) {
+      try {
+        Book book = await fetchBook(query);  // Busca o livro individualmente
+        books.add(book);  // Adiciona o livro à lista
+      } catch (e) {
+        //log('Erro ao buscar livro: $query - $e', name: 'GoogleBooksAPI');
+      }
+    }
 
     Navigator.pushReplacementNamed(
       context,
       '/home',
-      arguments: {'popular_books': popular_books},
+      arguments: {'popular_books': books},
     );
   }
 
- 
-
-  Future<void> setupDatabase() async{
-    DatabaseHelper databaseHelper = DatabaseHelper(); // Instancia o DatabaseHelper
-    await databaseHelper.database; 
+  Future<void> setupDatabase() async {
+    DatabaseHelper databaseHelper =
+        DatabaseHelper(); // Instancia o DatabaseHelper
+    await databaseHelper.database;
   }
 
   @override
