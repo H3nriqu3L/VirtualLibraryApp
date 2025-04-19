@@ -1,39 +1,63 @@
 [
     {
-        "title":"Crime and Punishment",
-        "author":"Dostoievsky",
-        "img":"crime_and_punishment.jpg",
-        "audio":"ebook_crime_and_punishment.mp3"
+      "volumeInfo": {
+        "title": "Crime and Punishment",
+        "authors": ["Dostoievsky"],
+        "description": "No description available",
+        "imageLinks": {
+          "thumbnail": "crime_and_punishment.jpg"
+        }
+      }
     },
     {
-      "title": "Pride and Prejudice",
-      "author": "Jane Austen",
-      "img": "pride_and_prejudice.jpg",
-      "audio": "ebook_pride_and_prejudice.mp3"
+      "volumeInfo": {
+        "title": "Pride and Prejudice",
+        "authors": ["Jane Austen"],
+        "description": "No description available",
+        "imageLinks": {
+          "thumbnail": "pride_and_prejudice.jpg"
+        }
+      }
     },
     {
-      "title": "1984",
-      "author": "George Orwell",
-      "img": "1984.jpg",
-      "audio": "ebook_1984.mp3"
+      "volumeInfo": {
+        "title": "1984",
+        "authors": ["George Orwell"],
+        "description": "No description available",
+        "imageLinks": {
+          "thumbnail": "1984.jpg"
+        }
+      }
     },
     {
-      "title": "To Kill a Mockingbird",
-      "author": "Harper Lee",
-      "img": "to_kill_a_mockingbird.jpg",
-      "audio": "ebook_to_kill_a_mockingbird.mp3"
+      "volumeInfo": {
+        "title": "To Kill a Mockingbird",
+        "authors": ["Harper Lee"],
+        "description": "No description available",
+        "imageLinks": {
+          "thumbnail": "to_kill_a_mockingbird.jpg"
+        }
+      }
     },
     {
-      "title": "The Great Gatsby",
-      "author": "F. Scott Fitzgerald",
-      "img": "the_great_gatsby.jpg",
-      "audio": "ebook_the_great_gatsby.mp3"
+      "volumeInfo": {
+        "title": "The Great Gatsby",
+        "authors": ["F. Scott Fitzgerald"],
+        "description": "No description available",
+        "imageLinks": {
+          "thumbnail": "the_great_gatsby.jpg"
+        }
+      }
     },
     {
-      "title": "Moby-Dick",
-      "author": "Herman Melville",
-      "img": "moby_dick.jpg",
-      "audio": "ebook_moby_dick.mp3"
+      "volumeInfo": {
+        "title": "Moby-Dick",
+        "authors": ["Herman Melville"],
+        "description": "No description available",
+        "imageLinks": {
+          "thumbnail": "moby_dick.jpg"
+        }
+      }
     }
   ]
   

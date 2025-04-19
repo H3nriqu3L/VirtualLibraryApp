@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:book_app/utils/book.dart';
 
 
 class LoadingPage extends StatefulWidget {
@@ -18,14 +19,17 @@ class _LoadingPageState extends State<LoadingPage> {
 
     List<dynamic> booksJson = jsonDecode(jsonString);
 
-    List<Map<String, dynamic>> booksData = List<Map<String, dynamic>>.from(
-      booksJson,
-    );
+    List<Book> books = booksJson.map((json) => Book.fromJson(json)).toList();
+    // List<Map<String, dynamic>> booksData = List<Map<String, dynamic>>.from(
+    //   booksJson,
+    // );
+
+
 
     Navigator.pushReplacementNamed(
       context,
       '/home',
-      arguments: {'books': booksData},
+      arguments: {'books': books},
     );
   }
 

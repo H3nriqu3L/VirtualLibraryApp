@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:book_app/pages/my_home_page.dart';
 import 'package:book_app/pages/loading_page.dart';
+import 'package:book_app/pages/searching_page.dart';
+
 void main() {
   runApp(MaterialApp(
     title: 'Book App',
@@ -12,6 +14,7 @@ void main() {
     routes: {
       '/':(context) => LoadingPage(),
       '/home': (context) => MyHomePage(),
+      '/search':(context) => SearchingPage(),
     },
   ));
 }
