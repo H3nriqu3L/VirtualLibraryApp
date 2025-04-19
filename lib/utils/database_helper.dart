@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:path/path.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:book_app/models/book.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -8,14 +9,16 @@ class DatabaseHelper {
 
   factory DatabaseHelper() => _instance;
 
-  DatabaseHelper._internal(){
-     sqfliteFfiInit();
-    // Set the database factory
-    databaseFactory = databaseFactoryFfi;
-  }
+  DatabaseHelper._internal();
 
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'my_database.db');
+
+    var dbExists = await databaseExists(path);
+    // if (dbExists) {
+    //   await deleteDatabase(path); // Exclui o banco de dados existente
+    //   print('Banco de dados excluído: $path');
+    // }
     return await openDatabase(path, version: 1, onCreate: _createDb);
   }
 
@@ -30,7 +33,8 @@ class DatabaseHelper {
         end_date TEXT,
         notes TEXT,
         rating REAL,
-        pages_read INTEGER
+        pages_read INTEGER,
+        img TEXT
       )
     ''');
 
@@ -54,9 +58,9 @@ class DatabaseHelper {
 
   // ======== MÉTODOS PARA LIVROS ========
 
-  Future<int> insertBook(Map<String, dynamic> book) async {
+  Future<int> insertBook(Book book) async {
     final db = await database;
-    return await db.insert('books', book);
+    return await db.insert('books', book.toMap());
   }
 
   Future<List<Map<String, dynamic>>> getBooks() async {
@@ -70,14 +74,40 @@ class DatabaseHelper {
     return result.isNotEmpty ? result.first : null;
   }
 
-  Future<int> updateBook(int id, Map<String, dynamic> book) async {
+  Future<int> updateBook(int id, Book book) async {
     final db = await database;
-    return await db.update('books', book, where: 'id = ?', whereArgs: [id]);
+    return await db.update(
+      'books',
+      book.toMap(),
+      where: 'id = ?',
+      whereArgs: [id],
+    );
   }
 
   Future<int> deleteBook(int id) async {
     final db = await database;
     return await db.delete('books', where: 'id = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> getBooksByTitle(String title) async {
+  final db = await database;
+  return await db.query(
+    'books',
+    where: 'title LIKE ?',
+    whereArgs: ['%$title%'],
+  );
+  
+  
+  
+  }
+  Future<String> getBookStatusByTitle(String title) async {
+    final books = await getBooksByTitle(title);
+
+    if (books.isNotEmpty) {
+      return books.first['status'] ?? 'notStarted';
+    } else {
+      return 'notStarted';
+    }
   }
 
   // ======== MÉTODOS PARA NOTAS ========
@@ -93,12 +123,34 @@ class DatabaseHelper {
       'book_notes',
       where: 'book_id = ?',
       whereArgs: [bookId],
-      orderBy: 'page ASC'
+      orderBy: 'page ASC',
     );
   }
 
   Future<int> deleteNote(int noteId) async {
     final db = await database;
     return await db.delete('book_notes', where: 'id = ?', whereArgs: [noteId]);
+  }
+
+  Future<void> logDatabaseContent() async {
+    final db = await database;
+
+    print('===== 📚 TABLE: BOOKS =====');
+    final books = await db.query('books');
+    for (var book in books) {
+      print(book);
+    }
+
+    print('===== 📝 TABLE: BOOK_NOTES =====');
+    final notes = await db.query('book_notes');
+    for (var note in notes) {
+      print(note);
+    }
+  }
+
+  Future<void> deleteDatabaseFile() async {
+    String path = join(await getDatabasesPath(), 'my_database.db');
+    await deleteDatabase(path);
+    print('Banco de dados deletado em: $path');
   }
 }

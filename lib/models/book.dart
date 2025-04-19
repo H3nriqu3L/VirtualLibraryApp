@@ -13,9 +13,9 @@ class Book {
   int? pageCount;
   List<String>? categories;
   String? language;
+  String status;
 
-
-   Book({
+  Book({
     required this.title,
     required this.authors,
     required this.description,
@@ -26,12 +26,17 @@ class Book {
     this.pageCount,
     this.categories,
     this.language,
+    this.status = 'notStarted'
   });
+
+  void setStatus(String st){
+    status = st;
+  }
 
   factory Book.fromJson(Map<String, dynamic> json) {
     final volumeInfo = json['volumeInfo'];
 
-     return Book(
+    return Book(
       title: volumeInfo['title'] ?? 'No title',
       authors: List<String>.from(volumeInfo['authors'] ?? ['Unknown author']),
       description: volumeInfo['description'] ?? 'No description available',
@@ -40,10 +45,43 @@ class Book {
       publisher: volumeInfo['publisher'],
       publishedDate: volumeInfo['publishedDate'],
       pageCount: volumeInfo['pageCount'],
-      categories: (volumeInfo['categories'] as List?)?.map((e) => e.toString()).toList(),
+      categories:
+          (volumeInfo['categories'] as List?)
+              ?.map((e) => e.toString())
+              .toList(),
       language: volumeInfo['language'],
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'title': title,
+      'author': authors.join(', '),
+      'status': status, // você pode alterar conforme o necessário
+      'start_date': null,
+      'end_date': null,
+      'notes': description,
+      'rating': null,
+      'pages_read': 0,
+      'img': img,
+    };
+  }
+
+  factory Book.fromDb(Map<String, dynamic> map) {
+  return Book(
+    title: map['title'],
+    authors: map['author'] != null ? map['author'].split(', ') : ['Unknown'],
+    description: map['notes'] ?? 'No description',
+    img: map['img'] ?? 'defaultimg.jpg', // ou uma imagem default
+    subtitle: null,
+    publisher: null,
+    publishedDate: null,
+    pageCount: map['pages_read'],
+    categories: null,
+    language: null,
+    status: map['status']
+  );
+}
 }
 
 Future<List<Book>> fetchBooks(String query) async {

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:book_app/models/book.dart';
 import 'package:book_app/utils/database_helper.dart';
+
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 
 class LoadingPage extends StatefulWidget {
@@ -20,7 +21,7 @@ class _LoadingPageState extends State<LoadingPage> {
 
     List<dynamic> booksJson = jsonDecode(jsonString);
 
-    List<Book> books = booksJson.map((json) => Book.fromJson(json)).toList();
+    List<Book> popular_books = booksJson.map((json) => Book.fromJson(json)).toList();
     // List<Map<String, dynamic>> booksData = List<Map<String, dynamic>>.from(
     //   booksJson,
     // );
@@ -30,9 +31,11 @@ class _LoadingPageState extends State<LoadingPage> {
     Navigator.pushReplacementNamed(
       context,
       '/home',
-      arguments: {'books': books},
+      arguments: {'popular_books': popular_books},
     );
   }
+
+ 
 
   Future<void> setupDatabase() async{
     DatabaseHelper databaseHelper = DatabaseHelper(); // Instancia o DatabaseHelper
@@ -43,7 +46,7 @@ class _LoadingPageState extends State<LoadingPage> {
   void initState() {
     super.initState();
     readData(context);
-    //setupDatabase();
+    setupDatabase();
   }
 
   @override

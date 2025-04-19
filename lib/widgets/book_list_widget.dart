@@ -36,14 +36,34 @@ class BookListWidget extends StatelessWidget {
                       child: ListTile(
                         // Display the book image on the left
                         leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child: Image.asset(
-                            'assets/${book.img}',
-                            width: 50,
-                            height: 90,
-                            fit: BoxFit.cover,
+                            borderRadius: BorderRadius.circular(4),
+                            child:
+                                book.img.startsWith('http')
+                                    ? Image.network(
+                                      book.img,
+                                      width: 50,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (
+                                        context,
+                                        error,
+                                        stackTrace,
+                                      ) {
+                                        return Image.asset(
+                                          'assets/defaultimg.jpg',
+                                          width: 50,
+                                          height: 90,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    )
+                                    : Image.asset(
+                                      'assets/defaultimg.jpg',
+                                      width: 50,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                    ),
                           ),
-                        ),
                         // Display the book title
                         title: Text(
                           book.title,

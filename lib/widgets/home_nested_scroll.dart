@@ -3,7 +3,6 @@ import 'package:book_app/audio/app_colors.dart' as AppColors;
 import 'package:book_app/widgets/book_list_widget.dart';
 import 'package:book_app/models/book.dart';
 
-
 class HomeNestedScroll extends StatefulWidget {
   final List<Book> books;
   const HomeNestedScroll({super.key, required this.books});
@@ -21,7 +20,14 @@ class _HomeNestedScrollState extends State<HomeNestedScroll> {
   @override
   Widget build(BuildContext context) {
     final books = widget.books;
+    books.forEach((book) {
+      print('Título: ${book.title}, Status: ${book.status}');
+    });
     final List<String> tabs = <String>['Read', 'Reading'];
+    final readBooks = books.where((book) => book.status == 'read').toList();
+    final readingBooks =
+        books.where((book) => book.status == 'reading').toList();
+
     return DefaultTabController(
       length: tabs.length, // This is the number of tabs.
       child: Scaffold(
@@ -52,19 +58,18 @@ class _HomeNestedScrollState extends State<HomeNestedScroll> {
             ];
           },
           body: TabBarView(
-            // These are the contents of the tab views, below the tabs.
-            children:
-                tabs.map((String name) {
-                  return SafeArea(
-                    top: false,
-                    bottom: false,
-                    child: Builder(
-                      builder: (BuildContext context) {
-                        return BookListWidget(books: books);
-                      },
-                    ),
-                  );
-                }).toList(),
+            children: [
+              SafeArea(
+                top: false,
+                bottom: false,
+                child: BookListWidget(books: readBooks),
+              ),
+              SafeArea(
+                top: false,
+                bottom: false,
+                child: BookListWidget(books: readingBooks),
+              ),
+            ],
           ),
         ),
       ),

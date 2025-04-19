@@ -4,6 +4,7 @@ import 'package:book_app/pages/loading_page.dart';
 import 'package:book_app/pages/searching_page.dart';
 import 'package:book_app/pages/book_page.dart';
 import 'package:path/path.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart'; 
 
 void main() {
   runApp(MaterialApp(

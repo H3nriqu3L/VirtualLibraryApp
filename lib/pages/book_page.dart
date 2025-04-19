@@ -5,6 +5,7 @@ import 'package:book_app/widgets/header.dart';
 import 'package:book_app/models/book.dart';
 import 'package:book_app/widgets/description.dart';
 import 'package:book_app/widgets/floating_button.dart';
+import 'package:book_app/utils/database_helper.dart';
 
 class BookPage extends StatelessWidget {
   const BookPage({super.key});
@@ -12,6 +13,7 @@ class BookPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Book book = ModalRoute.of(context)?.settings.arguments as Book;
+    final db = DatabaseHelper();
 
     return Scaffold(
       backgroundColor: AppColors.background,
@@ -19,7 +21,7 @@ class BookPage extends StatelessWidget {
         preferredSize: Size.fromHeight(50),
         child: SafeArea(child: Header()),
       ),
-      floatingActionButton: MyFloatingButton(),
+      floatingActionButton: MyFloatingButton(book: book),
       body: SingleChildScrollView(
         // Isso permite que a tela role para baixo
         child: Column(
@@ -106,8 +108,8 @@ class BookPage extends StatelessWidget {
                         book.categories?.map<Widget>((category) {
                           return Container(
                             padding: EdgeInsets.symmetric(
-                              horizontal: 12,
-                              vertical: 6,
+                              horizontal: 16,
+                              vertical: 7,
                             ),
                             decoration: BoxDecoration(
                               color: Colors.grey[200],
@@ -115,11 +117,61 @@ class BookPage extends StatelessWidget {
                             ),
                             child: Text(
                               category,
-                              style: TextStyle(fontSize: 12),
+                              style: TextStyle(fontSize: 14),
                             ),
                           );
                         }).toList() ??
                         [], // Provide empty list as fallback if categories is null
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(height: 16),
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 8, 16, 5),
+              child: Row(
+                children: [
+                  Text(
+                    'Status',
+
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.fromLTRB(20, 0, 16, 3),
+              child: Row(
+                children: [
+                  FutureBuilder(
+                    future: db.getBookStatusByTitle(book.title),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return CircularProgressIndicator();
+                      } else if (snapshot.hasError) {
+                        return Text('Error: ${snapshot.error}');
+                      } else {
+                        return Container(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16,
+                            vertical: 7,
+                          ),
+                          decoration: BoxDecoration(
+                            color:
+                                snapshot.data == 'read'
+                                    ? Colors.green
+                                    : snapshot.data == 'reading'
+                                    ? Colors.yellow
+                                    : Colors.grey[200],
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Text(
+                            snapshot.data?.toUpperCase() ?? 'notStarted',
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        );
+                      }
+                    },
                   ),
                 ],
               ),
