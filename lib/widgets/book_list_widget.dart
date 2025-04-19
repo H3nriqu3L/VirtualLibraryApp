@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_app/utils/book.dart';
+import 'package:book_app/models/book.dart';
 
 class BookListWidget extends StatelessWidget {
   final List<Book> books;
@@ -40,7 +40,7 @@ class BookListWidget extends StatelessWidget {
                           child: Image.asset(
                             'assets/${book.img}',
                             width: 50,
-                            height: 80,
+                            height: 90,
                             fit: BoxFit.cover,
                           ),
                         ),

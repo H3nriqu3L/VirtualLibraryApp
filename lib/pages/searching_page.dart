@@ -1,6 +1,6 @@
 import 'package:book_app/widgets/header.dart';
 import 'package:flutter/material.dart';
-import 'package:book_app/utils/book.dart';
+import 'package:book_app/models/book.dart';
 import 'package:book_app/audio/app_colors.dart' as AppColors;
 import 'package:book_app/widgets/book_list_widget_searched.dart';
 
@@ -28,12 +28,12 @@ class _SearchingPageState extends State<SearchingPage> {
   void searchBook(String query) async {
     try {
       List<Book> fetchedBooks = await fetchBooks(query);
-      for (var book in fetchedBooks) {
-        print('Título: ${book.title}');
-        print('Autores: ${book.authors}');
-        print('Imagem: ${book.img}');
-        print('---');
-      }
+      // for (var book in fetchedBooks) {
+      //   print('Título: ${book.title}');
+      //   print('Autores: ${book.authors}');
+      //   print('Imagem: ${book.img}');
+      //   print('---');
+      // }
       setState(() {
         books = fetchedBooks;
       });

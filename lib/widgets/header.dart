@@ -11,15 +11,22 @@ class _HeaderState extends State<Header> {
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
+
   @override
   Widget build(BuildContext context) {
+    final isHome = ModalRoute.of(context)?.settings.name == '/home';
     return Container(
       margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
       height: 50,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Icon(Icons.dashboard, size: 30, color: Colors.black),
+            isHome
+            ? Icon(Icons.dashboard, size: 30, color: Colors.black)
+            : IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.black, size: 30),
+                onPressed: () => Navigator.pop(context),
+              ),
           Row(
             children: [
               isSearching

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:book_app/audio/app_colors.dart' as AppColors;
 import 'package:book_app/widgets/book_list_widget.dart';
-import 'package:book_app/utils/book.dart';
+import 'package:book_app/models/book.dart';
 
 
 class HomeNestedScroll extends StatefulWidget {

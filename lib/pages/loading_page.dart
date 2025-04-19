@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:convert';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:book_app/utils/book.dart';
+import 'package:book_app/models/book.dart';
+import 'package:book_app/utils/database_helper.dart';
 
 
 class LoadingPage extends StatefulWidget {
@@ -33,10 +34,16 @@ class _LoadingPageState extends State<LoadingPage> {
     );
   }
 
+  Future<void> setupDatabase() async{
+    DatabaseHelper databaseHelper = DatabaseHelper(); // Instancia o DatabaseHelper
+    await databaseHelper.database; 
+  }
+
   @override
   void initState() {
     super.initState();
     readData(context);
+    //setupDatabase();
   }
 
   @override

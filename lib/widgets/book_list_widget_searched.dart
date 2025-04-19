@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:book_app/utils/book.dart';
+import 'package:book_app/models/book.dart';
 
 class BookListWidgetSearched extends StatelessWidget {
   final List<Book> books;
@@ -21,44 +21,57 @@ class BookListWidgetSearched extends StatelessWidget {
 
                 return Padding(
                   padding: const EdgeInsets.only(bottom: 12),
-                  child: Card(
-                    color: Colors.grey[100],
-                    elevation: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: ListTile(
-                        // Display the book image on the left
-                        leading: ClipRRect(
-                          borderRadius: BorderRadius.circular(4),
-                          child:
-                              book.img.startsWith('http')
-                                  ? Image.network(
-                                    book.img,
-                                    width: 50,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, error, stackTrace) {
-                                      return Image.asset(
-                                        'assets/defaultimg.jpg',
-                                        width: 50,
-                                        height: 80,
-                                        fit: BoxFit.cover,
-                                      );
-                                    },
-                                  )
-                                  : Image.asset(
-                                    'assets/defaultimg.jpg',
-                                    width: 50,
-                                    height: 80,
-                                    fit: BoxFit.cover,
-                                  ),
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/bookpage',
+                        arguments: book, // envia o book como argumento
+                      );
+                    },
+                    child: Card(
+                      color: Colors.grey[100],
+                      elevation: 2,
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ListTile(
+                          // Display the book image on the left
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child:
+                                book.img.startsWith('http')
+                                    ? Image.network(
+                                      book.img,
+                                      width: 50,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                      errorBuilder: (
+                                        context,
+                                        error,
+                                        stackTrace,
+                                      ) {
+                                        return Image.asset(
+                                          'assets/defaultimg.jpg',
+                                          width: 50,
+                                          height: 90,
+                                          fit: BoxFit.cover,
+                                        );
+                                      },
+                                    )
+                                    : Image.asset(
+                                      'assets/defaultimg.jpg',
+                                      width: 50,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                    ),
+                          ),
+                          // Display the book title
+                          title: Text(
+                            book.title,
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                          subtitle: Text(book.authors.join(', ')),
                         ),
-                        // Display the book title
-                        title: Text(
-                          book.title,
-                          style: TextStyle(fontWeight: FontWeight.bold),
-                        ),
-                        subtitle: Text(book.authors.join(', ')),
                       ),
                     ),
                   ),
