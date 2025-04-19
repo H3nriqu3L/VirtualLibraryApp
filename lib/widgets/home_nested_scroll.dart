@@ -5,7 +5,8 @@ import 'package:book_app/models/book.dart';
 
 class HomeNestedScroll extends StatefulWidget {
   final List<Book> books;
-  const HomeNestedScroll({super.key, required this.books});
+  final VoidCallback onRefreshBooks;
+  const HomeNestedScroll({super.key, required this.books, required this.onRefreshBooks,});
 
   @override
   State<HomeNestedScroll> createState() => _HomeNestedScrollState();
@@ -62,12 +63,12 @@ class _HomeNestedScrollState extends State<HomeNestedScroll> {
               SafeArea(
                 top: false,
                 bottom: false,
-                child: BookListWidget(books: readBooks),
+                child: BookListWidget(books: readBooks, onRefreshBooks:widget.onRefreshBooks),
               ),
               SafeArea(
                 top: false,
                 bottom: false,
-                child: BookListWidget(books: readingBooks),
+                child: BookListWidget(books: readingBooks, onRefreshBooks: widget.onRefreshBooks),
               ),
             ],
           ),

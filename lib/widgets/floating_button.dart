@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:book_app/utils/database_helper.dart';
 import 'package:book_app/models/book.dart';
 
-
 class MyFloatingButton extends StatelessWidget {
   final Book book;
   const MyFloatingButton({super.key, required this.book});
@@ -26,16 +25,30 @@ class MyFloatingButton extends StatelessWidget {
                     leading: Icon(Icons.book, color: Colors.green),
                     title: Text('Read'),
                     onTap: () async {
-                      Navigator.pop(context, true); 
+                      Navigator.pop(context, true);
 
                       try {
+                        final db = DatabaseHelper();
+                        final existingBooks = await db.getBooksByTitle(
+                          book.title,
+                        );
+
                         // Add status 'read'
                         book.setStatus('read');
-                        await DatabaseHelper().insertBook(book);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Added to Read list')),
-                        );
+                        if (existingBooks.isNotEmpty) {
+                          final int existingBookId = existingBooks.first['id'] as int;
+                          await db.updateBook(existingBookId, book);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Updated to Read list')),
+                          );
+                        } else{
+                          await db.insertBook(book);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Added to Read list')),
+                          );
+                        }
+
                       } catch (e) {
                         ScaffoldMessenger.of(
                           context,
@@ -50,13 +63,27 @@ class MyFloatingButton extends StatelessWidget {
                       Navigator.pop(context, true);
 
                       try {
+                        final db = DatabaseHelper();
+                        final  existingBooks = await db.getBooksByTitle(
+                          book.title,
+                        );
+
                         // Add status 'reading'
                         book.setStatus('reading');
-                        await DatabaseHelper().insertBook(book);
 
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Added to Reading list')),
-                        );
+                        if (existingBooks.isNotEmpty) {
+                          final int existingBookId = existingBooks.first['id'] as int;
+                          await db.updateBook(existingBookId, book);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Updated to Reading list')),
+                          );
+                        } else{
+                          await db.insertBook(book);
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Added to Reading list')),
+                          );
+                        }
+
                       } catch (e) {
                         ScaffoldMessenger.of(
                           context,

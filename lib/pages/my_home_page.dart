@@ -134,7 +134,7 @@ class _MyHomePageState extends State<MyHomePage> with WidgetsBindingObserver {
               ),
             ),
             SizedBox(height: 10),
-            Expanded(child: HomeNestedScroll(books: books)),
+            Expanded(child: HomeNestedScroll(books: books, onRefreshBooks:refreshBooks ,)),
           ],
         ),
       ),
