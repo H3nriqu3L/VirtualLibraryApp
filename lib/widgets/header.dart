@@ -11,8 +11,6 @@ class _HeaderState extends State<Header> {
   bool isSearching = false;
   final TextEditingController _searchController = TextEditingController();
 
- 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,7 +47,20 @@ class _HeaderState extends State<Header> {
                         ),
                       ),
                       onSubmitted: (query) {
-                        Navigator.pushNamed(context, '/search', arguments: query);
+                        if (ModalRoute.of(context)?.settings.name ==
+                            '/search') {
+                          Navigator.pushReplacementNamed(
+                            context,
+                            '/search',
+                            arguments: query,
+                          );
+                        } else {
+                          Navigator.pushNamed(
+                            context,
+                            '/search',
+                            arguments: query,
+                          );
+                        }
                       },
                     ),
                   )
