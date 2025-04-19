@@ -1,7 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:book_app/audio/app_colors.dart' as AppColors;
-import 'package:book_app/widgets/home_nested_scroll.dart';
-import 'package:book_app/widgets/header.dart';
 import 'package:book_app/models/book.dart';
 
 class DescriptionWidget extends StatefulWidget {
@@ -17,7 +14,7 @@ class DescriptionWidgetState extends State<DescriptionWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final description = widget.book.description ?? 'No description available. ';
+    final description = widget.book.description;
     final shortDescription =
         description.length > 100
             ? description.substring(0, 130) + '...'

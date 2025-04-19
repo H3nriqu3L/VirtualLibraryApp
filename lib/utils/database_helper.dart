@@ -14,7 +14,7 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'my_database.db');
 
-    var dbExists = await databaseExists(path);
+    //var dbExists = await databaseExists(path);
     // if (dbExists) {
     //   await deleteDatabase(path); // Exclui o banco de dados existente
     //   print('Banco de dados excluído: $path');
