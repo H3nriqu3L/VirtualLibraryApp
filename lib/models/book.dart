@@ -14,6 +14,7 @@ class Book {
   List<String>? categories;
   String? language;
   String status;
+  int? id;
 
   Book({
     required this.title,
@@ -26,7 +27,8 @@ class Book {
     this.pageCount,
     this.categories,
     this.language,
-    this.status = 'notStarted'
+    this.status = 'notStarted',
+    this.id,
   });
 
   void setStatus(String st){
@@ -62,8 +64,9 @@ class Book {
       'end_date': null,
       'notes': description,
       'rating': null,
-      'pages_read': 0,
       'img': img,
+      'pageCount': pageCount,
+
     };
   }
 
@@ -76,10 +79,11 @@ class Book {
     subtitle: null,
     publisher: null,
     publishedDate: null,
-    pageCount: map['pages_read'],
+    pageCount: map['pageCount'],
     categories: null,
     language: null,
-    status: map['status']
+    status: map['status'],
+    id: map['id'],
   );
 }
 }
@@ -88,8 +92,8 @@ Future<List<Book>> fetchBooks(String query) async {
   final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
   final response = await get(url);
 
-  log('Resposta da API:', name: 'GoogleBooksAPI');
-  log(response.body, name: 'GoogleBooksAPI');
+  // log('Resposta da API:', name: 'GoogleBooksAPI');
+  // log(response.body, name: 'GoogleBooksAPI');
 
   if (response.statusCode == 200) {
     final Map data = jsonDecode(response.body);
@@ -104,8 +108,8 @@ Future<Book> fetchBook(String query) async {
   final url = Uri.parse('https://www.googleapis.com/books/v1/volumes?q=$query');
   final response = await get(url);
 
-  log('Resposta da API:', name: 'GoogleBooksAPI');
-  log(response.body, name: 'GoogleBooksAPI');
+  // log('Resposta da API:', name: 'GoogleBooksAPI');
+  // log(response.body, name: 'GoogleBooksAPI');
 
   if (response.statusCode == 200) {
     final Map data = jsonDecode(response.body);

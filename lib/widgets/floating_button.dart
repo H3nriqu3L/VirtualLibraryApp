@@ -43,7 +43,9 @@ class MyFloatingButton extends StatelessWidget {
                             SnackBar(content: Text('Updated to Read list')),
                           );
                         } else{
-                          await db.insertBook(book);
+                          int id = await db.insertBook(book); 
+                          book.id = id;
+
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Added to Read list')),
                           );
@@ -78,7 +80,8 @@ class MyFloatingButton extends StatelessWidget {
                             SnackBar(content: Text('Updated to Reading list')),
                           );
                         } else{
-                          await db.insertBook(book);
+                          int id = await db.insertBook(book); 
+                          book.id = id;
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text('Added to Reading list')),
                           );

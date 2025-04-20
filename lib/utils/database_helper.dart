@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:book_app/models/book.dart';
+import 'package:book_app/models/note.dart';
 
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
@@ -14,11 +15,11 @@ class DatabaseHelper {
   Future<Database> _initDatabase() async {
     String path = join(await getDatabasesPath(), 'my_database.db');
 
-    // var dbExists = await databaseExists(path);
-    // if (dbExists) {
-    //   await deleteDatabase(path); // Exclui o banco de dados existente
-    //   print('Banco de dados excluído: $path');
-    // }
+    var dbExists = await databaseExists(path);
+    if (dbExists) {
+      await deleteDatabase(path); // Exclui o banco de dados existente
+      print('Banco de dados excluído: $path');
+    }
     return await openDatabase(path, version: 1, onCreate: _createDb);
   }
 
@@ -33,7 +34,7 @@ class DatabaseHelper {
         end_date TEXT,
         notes TEXT,
         rating REAL,
-        pages_read INTEGER,
+        pageCount INTEGER,
         img TEXT
       )
     ''');
@@ -44,6 +45,7 @@ class DatabaseHelper {
         book_id INTEGER NOT NULL,
         note TEXT NOT NULL,
         page INTEGER NOT NULL,
+        progress DOUBLE NOT NULL DEFAULT 0.0,
         date TEXT NOT NULL,
         FOREIGN KEY(book_id) REFERENCES books(id) ON DELETE CASCADE
       )
@@ -112,10 +114,11 @@ class DatabaseHelper {
 
   // ======== MÉTODOS PARA NOTAS ========
 
-  Future<int> insertNote(Map<String, dynamic> note) async {
+  Future<int> insertNote(Note note) async {
     final db = await database;
-    return await db.insert('book_notes', note);
+    return await db.insert('book_notes', note.toMap());
   }
+  
 
   Future<List<Map<String, dynamic>>> getNotesForBook(int bookId) async {
     final db = await database;

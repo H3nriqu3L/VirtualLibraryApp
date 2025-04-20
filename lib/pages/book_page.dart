@@ -150,24 +150,54 @@ class BookPage extends StatelessWidget {
                       } else if (snapshot.hasError) {
                         return Text('Error: ${snapshot.error}');
                       } else {
-                        return Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 7,
-                          ),
-                          decoration: BoxDecoration(
-                            color:
-                                snapshot.data == 'read'
-                                    ? Colors.green
-                                    : snapshot.data == 'reading'
-                                    ? Colors.yellow
-                                    : Colors.grey[200],
-                            borderRadius: BorderRadius.circular(20),
-                          ),
-                          child: Text(
-                            snapshot.data?.toUpperCase() ?? 'notStarted',
-                            style: TextStyle(fontSize: 14),
-                          ),
+                        final bool showEditButton =
+                            snapshot.data == 'reading' ||
+                            snapshot.data == 'read';
+                        return Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Container(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 7,
+                              ),
+                              decoration: BoxDecoration(
+                                color:
+                                    snapshot.data == 'read'
+                                        ? Colors.green
+                                        : snapshot.data == 'reading'
+                                        ? Colors.yellow
+                                        : Colors.grey[200],
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Text(
+                                snapshot.data?.toUpperCase() ?? 'notStarted',
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ),
+                            if (showEditButton)
+                              TextButton.icon(
+                                icon: Icon(
+                                  Icons.edit,
+                                  size: 20,
+                                  color: Colors.black,
+                                ),
+                                label: Text(
+                                  'Edit Notes',
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.black,
+                                  ), // Estilo do texto
+                                ),
+                                onPressed: () {
+                                  Navigator.pushNamed(
+                                    context,
+                                    '/history',
+                                    arguments: book,
+                                  );
+                                },
+                              ),
+                          ],
                         );
                       }
                     },
